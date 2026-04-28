@@ -16,7 +16,7 @@
         - uses: actions/checkout@v4
                                                                                                                                                                                      
         - name: Run agent harness (pinned to commit SHA)                                                                                                                             
-          uses: cloudnua/agent-harness-action@add6d98080a7038d1de1cdd401754370dcd2c50f                                                                                               
+          uses: cloudnua/agent-harness-action@30238b08a7752a07a17f663688627f80e587f073                                                                                               
           with:                                                                                                                                                                      
             api-token: ${{ secrets.CLOUDNUA_API_TOKEN }}    
             api-url: https://app-uat.cloudnua.com                                                                                                                                    
