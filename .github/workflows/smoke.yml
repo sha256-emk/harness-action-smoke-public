@@ -16,16 +16,21 @@
         - uses: actions/checkout@v4
                                                                                                                                                                                      
         - name: Run agent harness (pinned to commit SHA)                                                                                                                             
-          uses: cloudnua/agent-harness-action@add6d98080a7038d1de1cdd401754370dcd2c50f                                                                                               
+          uses: cloudnua/agent-harness-action@12cd568d08ed71e3c756c7ed1ef239a2455c9862                                                                                               
           with:                                                                                                                                                                      
-            api-token: ${{ secrets.CLOUDNUA_API_TOKEN }}    
+            api-token: ${{ secrets.CLOUDNUA_API_TOKEN }}                                                                                                                             
             api-url: https://app-uat.cloudnua.com                                                                                                                                    
-            cf-access-client-id: ${{ secrets.CF_ACCESS_CLIENT_ID }}
+            cf-access-client-id: ${{ secrets.CF_ACCESS_CLIENT_ID }}                                                                                                                  
             cf-access-client-secret: ${{ secrets.CF_ACCESS_CLIENT_SECRET }}                                                                                                          
-            agent-command: 'bash -c ''echo "[smoke] stub agent: pre/post + API + Check Run wiring test"; sleep 1'''                                                                  
-            fail-on-violation: "false"                                                                                                                                               
+            agent-command: |                                                                                                                                                         
+              bash -c '                                     
+                echo "[smoke] stub agent: writing smoke-marker.txt to exercise scan path"                                                                                            
+                printf "smoke run %s\n" "$(date -u +%Y%m%dT%H%M%SZ)" > smoke-marker.txt                                                                                              
+                sleep 1
+              '                                                                                                                                                                      
+            fail-on-violation: "false"                      
           env:                                                                                                                                                                       
-            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}                                                                                                                                
+            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}                                                                                                                             
                                                                                                                                                                                      
         - name: Upload telemetry artifact
           if: always()                                                                                                                                                               

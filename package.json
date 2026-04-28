@@ -1,7 +1,9 @@
 {
   "name": "harness-action-smoke-public",
   "version": "0.0.1",
-  "description": "Smoke test repo for cloudnua/agent-harness-action public release"
+  "description": "Smoke test repo for cloudnua/agent-harness-action public release",
   "private": true,
-  "dependencies": {}
+  "dependencies": {
+    "lodash": "4.17.21"
+  } 
 }
