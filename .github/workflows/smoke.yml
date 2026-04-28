@@ -1,0 +1,36 @@
+  name: CloudNua Agent Harness Smoke                                                                                                                                                 
+                                                                                                                                                                                     
+  on:                                                                                                                                                                                
+    pull_request:                                                                                                                                                                    
+      branches: [main]                                      
+    workflow_dispatch:
+
+  jobs:
+    smoke:
+      runs-on: ubuntu-latest                                                                                                                                                         
+      permissions:
+        checks: write                                                                                                                                                                
+        contents: read                                      
+        pull-requests: read
+      steps:
+        - uses: actions/checkout@v4
+                                                                                                                                                                                     
+        - name: Run agent harness (pinned to commit SHA)                                                                                                                             
+          uses: cloudnua/agent-harness-action@add6d98080a7038d1de1cdd401754370dcd2c50f                                                                                               
+          with:                                                                                                                                                                      
+            api-token: ${{ secrets.CLOUDNUA_API_TOKEN }}    
+            api-url: https://app-uat.cloudnua.com                                                                                                                                    
+            cf-access-client-id: ${{ secrets.CF_ACCESS_CLIENT_ID }}
+            cf-access-client-secret: ${{ secrets.CF_ACCESS_CLIENT_SECRET }}                                                                                                          
+            agent-command: 'bash -c ''echo "[smoke] stub agent: pre/post + API + Check Run wiring test"; sleep 1'''                                                                  
+            fail-on-violation: "false"                                                                                                                                               
+          env:                                                                                                                                                                       
+            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}                                                                                                                                
+                                                                                                                                                                                     
+        - name: Upload telemetry artifact
+          if: always()                                                                                                                                                               
+          uses: actions/upload-artifact@v4                  
+          with:
+            name: cloudnua-scan-result
+            path: .cloudnua/                                                                                                                                                         
+            if-no-files-found: warn
